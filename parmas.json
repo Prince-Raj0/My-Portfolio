@@ -1,0 +1,10 @@
+{
+    "parmas":
+    {
+      "local_server": "True",
+      "local_url": "mysql+pymysql://root:@localhost/portfolio",
+      "prod_url": "mysql+pymysql://root:@localhost/portfolio",
+      "user_name":"rg2110405@gmail.com",
+      "password": "hdijccxacgqmwccj"
+    }
+  }
