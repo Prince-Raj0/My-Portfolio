@@ -79,20 +79,21 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
 import json
 import pymysql
-pymysql.install_as_MySQLdb()
 
+# Use pymysql instead of MySQLdb
+pymysql.install_as_MySQLdb()
 
 # Load config
 with open('parmas.json', 'r') as c:
     parmas = json.load(c)["parmas"]
 
-# Set to False for production
+# Set this to False when using Railway (production)
 local_server = False
 
-# Flask app init
+# Initialize Flask app
 app = Flask(__name__, static_folder='statics')
 
-# Email config
+# Email Configuration
 app.config.update(
     MAIL_SERVER="smtp.gmail.com",
     MAIL_PORT=465,
@@ -102,7 +103,7 @@ app.config.update(
 )
 mail = Mail(app)
 
-# Database config
+# Database Configuration
 if local_server:
     app.config['SQLALCHEMY_DATABASE_URI'] = parmas['local_url']
 else:
@@ -111,7 +112,9 @@ else:
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-# DB model
+# ============================
+# Database Model
+# ============================
 class Contact(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=True)
@@ -119,7 +122,10 @@ class Contact(db.Model):
     subject = db.Column(db.String(255), nullable=True)
     message = db.Column(db.Text, nullable=True)
 
+# ============================
 # Routes
+# ============================
+
 @app.route("/")
 def home():
     return render_template("index.html", parmas=parmas)
@@ -137,19 +143,21 @@ def contact():
         subject = request.form.get("subject")
         message = request.form.get("message")
 
-        # Insert into DB
+        # Save to Database
         entry = Contact(name=name, email=email, subject=subject, message=message)
         db.session.add(entry)
         db.session.commit()
 
-        # Send mail
+        # Send confirmation emails
         try:
+            # To admin
             mail.send_message(
                 f'New message from {name}',
                 sender=parmas['user_name'],
                 recipients=[parmas['user_name']],
                 body=f"Name: {name}\nEmail: {email}\nSubject: {subject}\n\n{message}"
             )
+            # To user
             mail.send_message(
                 'Thank you for contacting us',
                 sender=parmas['user_name'],
@@ -163,10 +171,8 @@ def contact():
 
     return render_template("index.html", parmas=parmas)
 
-# Run the app
+# ============================
+# Run App
+# ============================
 if __name__ == "__main__":
     app.run(debug=True, port=8060)
-
-
-
- 

@@ -1,6 +1,6 @@
 {
   "parmas": {
-    "local_server": "Falsa",
+    "local_server": "False",
     "local_url": "mysql+pymysql://root:@localhost/portfolio",
     "prod_url": "mysql+pymysql://root:NngtXeqcrGaYjkahCiOthYuPLRJFGOzZ@centerbeam.proxy.rlwy.net:12801/railway",
     "user_name": "rg2110405@gmail.com",
