@@ -78,6 +78,9 @@ from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
 import json
+import pymysql
+pymysql.install_as_MySQLdb()
+
 
 # Load config
 with open('parmas.json', 'r') as c:
