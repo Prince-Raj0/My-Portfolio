@@ -118,7 +118,7 @@ db = SQLAlchemy(app)
 class Contact(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=True)
-    email = db.Column(db.VARCHAR(20), nullable=True)
+    email = db.Column(db.String(100), nullable=True)  # ✅ Better length
     subject = db.Column(db.String(255), nullable=True)
     message = db.Column(db.Text, nullable=True)
 
