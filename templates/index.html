@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <header class="header">
+    <!-- <header class="header">
         <a href="#" class="logo"> Portfolio</a>
         <nav class="navbar">
             <a href="#home" style="--i:1" class="action">Home</a>
@@ -20,7 +20,19 @@
             <a href="#services" style="--i:4">Portfolio</a>
             <a href="#contact" style="--i:5">Contact</a>
         </nav>
+    </header> -->
+    <header class="header">
+        <a href="#" class="logo">Portfolio</a>
+        <div class="menu-toggle" id="menu-toggle">&#9776;</div>
+        <nav class="navbar" id="navbar">
+            <a href="#home" style="--i:1" class="action">Home</a>
+            <a href="#about" style="--i:2">About</a>
+            <a href="#Skills" style="--i:3">Skill</a>
+            <a href="#services" style="--i:4">Portfolio</a>
+            <a href="#contact" style="--i:5">Contact</a>
+        </nav>
     </header>
+
     <section class="home" id="home">
         <div class="house-count">
             <h3>Hello It's Me</h3>
@@ -40,6 +52,9 @@
                 <!-- <a href="#"><i class='bx bxl-whatsapp' ></i></a> -->
             </div>
             <a href="/profile" class="btn-box">More about Me </a>
+        </div>
+        <div class="image-content">
+            <img src="/statics/background1.png" alt="Rahul's photo" />
         </div>
         <span class="home-imgHover"></span>
     </section>
@@ -72,11 +87,11 @@
 
             </p><a href="/profile" class="btn-box">More about Me </a>
         </div>
-    </section>
+    </section> <br><br><br><br>
     <section>
         <div class="services" id="services">
             <div class="container">
-                <h1 class="sub-title"> My <span>Services</span></h1>
+                <h2 class="sub-title"> My <span>Services</span></h2>
                 <div class="services-list">
                     <div>
                         <i class="bx bx-code" style="color: aqua"></i>
@@ -104,8 +119,8 @@
             </div>
         </div>
     </section>
-    <h1 class="sub-title" id="Skills">My <span>Skills</span></h1>
-    <section class="skills-section">
+    <h2 class="sub-title" id="Skills">My <span>Skills</span></h2>
+    <section class="skills-section" id="Skills">
         <!-- Technical Skills -->
         <div class="container1" id="Skills">
             <h1 class="heading1">Technical Skills</h1>
@@ -263,6 +278,15 @@
     </div>
     <a href="" class="top"><i class="bx bxs-arrow-to-top bx-bounce" style="color: #000000;"></i></a>
     <script src="/statics/main.js"></script>
+    <script>
+        const toggle = document.getElementById('menu-toggle');
+        const navbar = document.getElementById('navbar');
+
+        toggle.addEventListener('click', () => {
+            navbar.classList.toggle('active');
+        });
+    </script>
+
 </body>
 
 </html>
