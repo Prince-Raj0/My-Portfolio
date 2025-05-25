@@ -85,50 +85,48 @@ pymysql.install_as_MySQLdb()
 
 # Load config
 with open('parmas.json', 'r') as c:
-    parmas = json.load(c)["parmas"]
+    params = json.load(c)["parmas"]
 
-# Set this to False when using Railway (production)
-local_server = False
-
-# Initialize Flask app
+# Flask app initialization
 app = Flask(__name__, static_folder='statics')
 
-# Email Configuration
+# Email configuration
 app.config.update(
     MAIL_SERVER="smtp.gmail.com",
     MAIL_PORT=465,
     MAIL_USE_SSL=True,
-    MAIL_USERNAME=parmas['user_name'],
-    MAIL_PASSWORD=parmas['password']
+    MAIL_USERNAME=params['user_name'],
+    MAIL_PASSWORD=params['password']
 )
 mail = Mail(app)
 
-# Database Configuration
+# Database configuration
+local_server = False  # Set False for production
 if local_server:
-    app.config['SQLALCHEMY_DATABASE_URI'] = parmas['local_url']
+    app.config['SQLALCHEMY_DATABASE_URI'] = params['local_url']
 else:
-    app.config['SQLALCHEMY_DATABASE_URI'] = parmas['prod_url']
+    app.config['SQLALCHEMY_DATABASE_URI'] = params['prod_url']
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-# ============================
-# Database Model
-# ============================
+# -----------------------
+# Database Models
+# -----------------------
 class Contact(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=True)
-    email = db.Column(db.String(100), nullable=True)  # ✅ Better length
-    subject = db.Column(db.String(255), nullable=True)
-    message = db.Column(db.Text, nullable=True)
+    name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(255), nullable=False)
+    subject = db.Column(db.String(255), nullable=False)
+    message = db.Column(db.Text, nullable=False)
 
-# ============================
+# -----------------------
 # Routes
-# ============================
+# -----------------------
 
 @app.route("/")
 def home():
-    return render_template("index.html", parmas=parmas)
+    return render_template("index.html", parmas=params)
 
 @app.route("/profile")
 def profile():
@@ -137,42 +135,43 @@ def profile():
 @app.route("/contact", methods=["GET", "POST"])
 def contact():
     if request.method == "POST":
-        # Get form data
         name = request.form.get("name")
         email = request.form.get("email")
         subject = request.form.get("subject")
         message = request.form.get("message")
 
-        # Save to Database
-        entry = Contact(name=name, email=email, subject=subject, message=message)
-        db.session.add(entry)
-        db.session.commit()
-
-        # Send confirmation emails
         try:
-            # To admin
+            # Save to database
+            entry = Contact(name=name, email=email, subject=subject, message=message)
+            db.session.add(entry)
+            db.session.commit()
+
+            # Send admin email
             mail.send_message(
-                f'New message from {name}',
-                sender=parmas['user_name'],
-                recipients=[parmas['user_name']],
+                subject=f'New message from {name}',
+                sender=params['user_name'],
+                recipients=[params['user_name']],
                 body=f"Name: {name}\nEmail: {email}\nSubject: {subject}\n\n{message}"
             )
-            # To user
+
+            # Send user confirmation email
             mail.send_message(
-                'Thank you for contacting us',
-                sender=parmas['user_name'],
+                subject='Thank you for contacting us',
+                sender=params['user_name'],
                 recipients=[email],
-                cc=[parmas['user_name']],
-                body=f"Dear {name},\n\nThank you for reaching out!\n\nYour message:\n{subject}\n\n{message}\n\nWe'll reply soon.\n\n– Your Website Team"
+                body=f"Dear {name},\n\nThanks for contacting us.\n\nSubject: {subject}\nMessage: {message}\n\nWe’ll get back to you soon.\n\n– Team"
             )
-            print("✅ Email sent successfully")
+
+            print("✅ Email sent and data saved.")
+
         except Exception as e:
-            print(f"❌ Error sending email: {e}")
+            print(f"❌ Error: {e}")
 
-    return render_template("index.html", parmas=parmas)
+    return render_template("index.html", parmas=params)
 
-# ============================
-# Run App
-# ============================
+# -----------------------
+# Run the app
+# -----------------------
 if __name__ == "__main__":
     app.run(debug=True, port=8060)
+
