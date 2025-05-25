@@ -172,6 +172,12 @@ def contact():
 # -----------------------
 # Run the app
 # -----------------------
+# -----------------------
+# Run the app
+# -----------------------
 if __name__ == "__main__":
+    with app.app_context():        # ✅ Important: Needed for SQLAlchemy context
+        db.create_all()            # ✅ Creates tables automatically if not exist
     app.run(debug=True, port=8060)
+
 
