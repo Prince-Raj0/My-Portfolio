@@ -1,9 +1,9 @@
 {
   "parmas": {
     "local_server": "False",
-    "local_url": "mysql+pymysql://root:@localhost/portfolio",
-    "prod_url": "mysql+pymysql://root:GrRINUkrFPxIEnxAhIyyWFPvPazJeoXI@centerbeam.proxy.rlwy.net:12557/railway",
+    "local_url": "mysql+pymysql://admin:Rahul12345678910@localhost:3308/portfolio",
+    "prod_url": "mysql+pymysql://admin:Rahul12345678910@localhost:3308/portfolio",
     "user_name": "rg2110405@gmail.com",
-    "password": "hdijccxacgqmwccj"
+    "password": "hilrqlybldmsjanh"
   }
 }
