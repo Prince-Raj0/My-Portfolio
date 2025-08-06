@@ -83,6 +83,10 @@ def contact():
             )
 
             print("✅ Email sent and data saved.")
+            print(f"Sending email to: {email}")
+            print(f"Subject: {subject}")
+            print(f"Message: {message}")
+
 
         except Exception as e:
             print(f"❌ Error: {e}")
